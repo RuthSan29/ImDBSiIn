@@ -1,0 +1,91 @@
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7197207
+Server version: 8.0.40 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show tables;
++---------------------------+
+| Tables_in_RuthSan$default |
++---------------------------+
+| USUARIOS                  |
+| detalle_horario           |
+| horario                   |
+| plantilla_detalle_horario |
++---------------------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into USUARIOS (nombre, apellido, departamento) values ("Dante", "Rendon", "Rh14");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into USUARIOS (nombre, apellido, departamento) values ("Jose", "Solís", "Rh15"), ("Lia", "Sanchez", "Rm10"), ("Luan", "Sanchez", "Rm10"), ("Mateo", "Rendon", "Rm11"), ("Sofia", "Gomez", "Rm12"), ("Juan", "Fernandez", "Rm13"), ("Ximena", "Gonzales", "Rm14");
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from USUARIOS;
++--------+-----------+--------------+
+| nombre | apellido  | departamento |
++--------+-----------+--------------+
+| Daniel | Gonzales  | Rh12         |
+| Tania  | Denisse   | Rh13         |
+| Dante  | Rendon    | Rh14         |
+| Jose   | Solís     | Rh15         |
+| Lia    | Sanchez   | Rm10         |
+| Luan   | Sanchez   | Rm10         |
+| Mateo  | Rendon    | Rm11         |
+| Sofia  | Gomez     | Rm12         |
+| Juan   | Fernandez | Rm13         |
+| Ximena | Gonzales  | Rm14         |
++--------+-----------+--------------+
+10 rows in set (0.00 sec)
+mysql> DESC detalle_horario;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| horario_id         | int         | NO   | PRI | NULL    |       |
+| hora_salida        | date        | NO   | PRI | NULL    |       |
+| hora_entrada       | date        | NO   |     | NULL    |       |
+| codigo_incapacidad | varchar(25) | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+mysql> DESC horario;
++--------------+------+------+-----+---------+----------------+
+| Field        | Type | Null | Key | Default | Extra          |
++--------------+------+------+-----+---------+----------------+
+| horario_id   | int  | NO   | PRI | NULL    | auto_increment |
+| plantilla_id | int  | YES  |     | NULL    |                |
++--------------+------+------+-----+---------+----------------+
+2 rows in set (0.01 sec)
+mysql> DESC plantilla_detalle_horario;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| plantilla_id       | int         | NO   | PRI | NULL    |       |
+| dia                | int         | NO   | PRI | NULL    |       |
+| codigo_incapacidad | varchar(25) | YES  |     | NULL    |       |
+| turno              | varchar(25) | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+mysql> insert into detalle_horario (horario_id,hora_salida,hora_entrada,codigo_incapacidad) values (1,'2025/02/17 13:33', '2025/03/17 13:3
+3', 'vacaciones');
+Query OK, 1 row affected, 4 warnings (0.02 sec)
+mysql> select * from detalle_horario;
++------------+-------------+--------------+--------------------+
+| horario_id | hora_salida | hora_entrada | codigo_incapacidad |
++------------+-------------+--------------+--------------------+
+|          1 | 2025-02-17  | 2025-03-17   | vacaciones         |
+|          1 | 2025-02-18  | 2025-02-25   | vacaciones         |
+|          2 | 2024-02-16  | 2024-06-20   | vacaciones         |
+|          3 | 2024-07-10  | 2025-01-16   | vacaciones         |
++------------+-------------+--------------+--------------------+
+4 rows in set (0.00 sec)
+mysql> 
