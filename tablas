@@ -1,0 +1,128 @@
+mysql> CREATE TABLE PlayoffRound (
+    ->   id int(14) NOT NULL,
+    ->   team1ld int (14) NOT NULL,
+    ->   team2ld int (14) NOT NULL,
+    ->   startTime date NOT NULL,
+    ->   endTime date NOT NULL,
+    ->   roundNum int (14) NOT NULL,
+    ->   PRIMARY KEY (roundNum)
+    -> );
+Query OK, 0 rows affected, 4 warnings (0.03 sec)
+
+mysql> 
+mysql> CREATE TABLE HockeyGame (
+    ->  id int(14) NOT NULL,
+    ->  roundld int (16) NOT NULL,
+    ->  startTime int (14) NOT NULL,
+    ->  description varchar (16) NOT NULL,
+    ->  team1ld date NOT NULL,
+    ->  team2ld date NOT NULL,
+    ->  PRYMARY KEY (description) 
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KEY (description) 
+)' at line 8
+mysql> 
+mysql> CREATE TABLE GameScores(
+    ->   id int(14) NOT NULL,
+    ->   team1Score int (13) NOT NULL, 
+    ->   team2Score int (13) NOT NULL,
+    ->   PRYMARY KEY (team1Score)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KEY (team1Score)
+)' at line 5
+mysql> 
+mysql> CREATE TABLE RoundStats(
+    ->   id int(14) NOT NULL,
+    ->   numShutouts int (50) NOT NULL,
+    ->   goalLeaderld int (50) NOT NULL,
+    ->   assistLeaderld int (50) NOT NULL,
+    ->   penaltyLeaderld int (50) NOT NULL,
+    ->   plusMinusLeaderld int (50) NOT NULL,
+    ->   faceoffsWonLeaderld int (50) NOT NULL,
+    ->   sogLeaderld int (50) NOT NULL,
+    ->   PRIMARY KEY(numShutouts)
+    -> );
+Query OK, 0 rows affected, 8 warnings (0.03 sec)
+
+mysql> 
+mysql> CREATE TABLE HockeyTeam (
+    ->   id int(14) NOT NULL,
+    ->   name varchar (40) DEFAULT NULL,
+    ->   logo varchar (200) DEFAULT NULL,
+    ->   PRIMARY KEY (name)
+    -> );
+ERROR 1171 (42000): All parts of a PRIMARY KEY must be NOT NULL; if you need NULL in a key, use UNIQUE instead
+mysql> 
+mysql> CREATE TABLE HockeyTeamPlayer(
+    ->   id int(14) NOT NULL,
+    ->   hockeyTeanld int (14) NOT NULL,
+    ->   firstName varchar (50) DEFAULT NULL,
+    ->   lastName varchar (50) DEFAULT NULL,
+    ->   jerseyNum int (10) NOT NULL,
+    ->   position INT (14) NOT NULL,
+    ->   PRIMARY KEY(firstName)
+    -> );
+ERROR 1171 (42000): All parts of a PRIMARY KEY must be NOT NULL; if you need NULL in a key, use UNIQUE instead
+mysql> 
+mysql> CREATE TABLE Userinfo (
+    ->   id int(14) NOT NULL,
+    ->   firstName varchar (20) DEFAULT NULL,
+    ->   lastName varchar (20) DEFAULT NULL,
+    ->   email varchar (50) DEFAULT NULL, 
+    ->   round1Points int (20) NOT NULL,
+    ->   round2Points int (20) NOT NULL,
+    ->   round3Points int (20) NOT NULL,
+    ->   round4points int (20) NOT NULL,
+    ->   PRYMARY KEY(email)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'KEY(email)
+)' at line 10
+mysql> 
+mysql> CREATE TABLE User (
+    ->   id int(14) NOT NULL,
+    ->   username varchar (50) DEFAULT NULL,
+    ->   password int (50) NOT NULL,
+    ->   PRIMARY KEY (password)
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.02 sec)
+
+mysql> 
+mysql> CREATE TABLE UserStatsPicks (
+    ->   id int(14) NOT NULL,
+    ->   roundld int (50) NOT NULL,
+    ->   goalLeaderld int (50) NOT NULL,
+    ->   assistLeaderld int (50) NOT NULL,
+    ->   penaltyLeaderld int (50) NOT NULL,
+    ->   plusMinusLeaderld int (50) NOT NULL,
+    ->   faceoffsWonLeaderld int (50) NOT NULL,
+    ->   sogLeaderld int (50) NOT NULL,
+    ->   numShutouts int (50) NOT NULL,
+    ->   userld int (50) NOT NULL,
+    ->   PRIMARY KEY (roundld)
+    -> );
+Query OK, 0 rows affected, 10 warnings (0.03 sec)
+mysql> 
+mysql> CREATE TABLE UserScorePicks (
+    ->   id int(14) NOT NULL,
+    ->   hockeyGameld int (50) NOT NULL,
+    ->   team1score int (50) NOT NULL,
+    ->   team2score int (50) NOT NULL,
+    ->   userld int (50) NOT NULL,
+    ->   PRIMARY KEY (userld)
+    -> );
+Query OK, 0 rows affected, 5 warnings (0.03 sec)
+mysql> show tables;
++---------------------------+
+| Tables_in_RuthSan$default |
++---------------------------+
+| PlayoffRound              |
+| RoundStats                |
+| USUARIOS                  |
+| User                      |
+| UserScorePicks            |
+| UserStatsPicks            |
+| detalle_horario           |
+| horario                   |
+| plantilla_detalle_horario |
++---------------------------+
+9 rows in set (0.00 sec)
