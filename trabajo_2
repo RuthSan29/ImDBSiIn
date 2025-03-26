@@ -1,0 +1,155 @@
+mysql> CREATE TABLE Registros (
+    ->     Customer_ID INT,         
+    ->     Type_Phone VARCHAR(50), 
+    ->     Number VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Registros (Customer_ID,Type_Phone,Number) VALUES
+    -> (1001,'Celular',333-897-5421),
+    -> (1001,'Trabajo',333-897-6542),
+    -> (1001,'Casa',333-698-9874),
+    -> (2002,'Celular',333-963-6544),
+    -> (2002,'Trabajo',333-812-9856),
+    -> (3003,'Celular',333-987-6541);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Directorio (
+    -> Customer_ID INT,
+    -> Celular varchar(13),
+    -> Trabajo varchar(13),
+    -> Casa varchar(13)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Directorio (`Customer_ID`, Celular, Trabajo, Casa) VALUES
+    -> (1001, '333-897-5421', '333-897-6542', '333-698-9874'),
+    -> (2002, '333-963-6544', '333-812-9856', NULL),
+    -> (3003, '333-987-6541', NULL, NULL);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Directorio;
++-------------+--------------+--------------+--------------+
+| Customer_ID | Celular      | Trabajo      | Casa         |
++-------------+--------------+--------------+--------------+
+|        1001 | 333-897-5421 | 333-897-6542 | 333-698-9874 |
+|        2002 | 333-963-6544 | 333-812-9856 | NULL         |
+|        3003 | 333-987-6541 | NULL         | NULL         |
++-------------+--------------+--------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Etapas_de_desarollo (
+    ->     Desarollo varchar (50),
+    ->     Etapa varchar (50),
+    ->     Finalizado varchar (50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Etapas_de_desarollo (Desarollo, Etapa, Finalizado) values
+    -> ('RestAPI', '1', '01/02/2024'),
+    -> ('RestAPI', '2', '30/05/2024'),
+    -> ('RestAPI', '3', '29/06/2024'),
+    -> ('Web', '1', '28/10/2024'),
+    -> ('Web', '2', '20/11/2024'),
+    -> ('Web', '3', null),
+    -> ('App', '1', '30/01/2025'),
+    -> ('App', '2', null);
+Query OK, 8 rows affected (0.00 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> SELECT DISTINCT Desarrollo
+    -> FROM Etapas_de_desarrollo
+    -> WHERE Finalizado IS NULL;
+ERROR 1146 (42S02): Table 'RuthSan$Trabajo2.Etapas_de_desarrollo' doesn't exist
+mysql> DROP TABLE Etapas_de_desarollo;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT DISTINCT Desarrollo
+    -> FROM Etapas_de_desarrollo
+    -> 
+    -> 
+    -> ;
+ERROR 1146 (42S02): Table 'RuthSan$Trabajo2.Etapas_de_desarrollo' doesn't exist
+mysql> CREATE TABLE Etapas_de_desarrollo (
+    ->     Desarollo varchar (50),
+    ->     Etapa varchar (50),
+    ->     Finalizado varchar (50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DROP TABLES Etapas_de_desarrollo;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Etapas_de_desarrollo (
+    ->     Desarrollo varchar (50),
+    ->     Etapa varchar (50),
+    ->     Finalizado varchar (50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Etapas_de_desarrollo (Desarrollo, Etapa, Finalizado) values
+    -> ('RestAPI', '1', '01/02/2024'),
+    -> ('RestAPI', '2', '30/05/2024'),
+    -> ('RestAPI', '3', '29/06/2024'),
+    -> ('Web', '1', '28/10/2024'),
+    -> ('Web', '2', '20/11/2024'),
+    -> ('Web', '3', null),
+    -> ('App', '1', '30/01/2025'),
+    -> ('App', '2', null);
+Query OK, 8 rows affected (0.00 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> SELECT DISTINCT Desarrollo
+    -> FROM Etapas_de_desarrollo
+    -> WHERE Finalizado IS NULL;
++------------+
+| Desarrollo |
++------------+
+| Web        |
+| App        |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Requisitos (
+    ->     Descripcion VARCHAR(35)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Requisitos (Descripcion) VALUES
+    -> ('Geólogo'),
+    -> ('Astrónomo'),
+    -> ('Técnico');
+Query OK, 3 rows affected (0.01 sec)
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> CREATE TABLE Candidatos (
+    ->     ID_candidato int (50),
+    ->     Descripcion varchar (35)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+mysql> INSERT INTO Candidatos (ID_candidato, Descripcion) VALUES
+    -> (1001, 'Geólogo'),
+    -> (1001, 'Astrónomo'),
+    -> (1001, 'Bioquimico'),
+    -> (1001, 'Técnico'),
+    -> (2002, 'Cirujano'),
+    -> (2002, 'Mecánico'),
+    -> (2002, 'Géologo'),
+    -> (3003, 'Géologo'),
+    -> (3003, 'Astrónomo'),
+    -> (4004, 'Ingeniero');
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+mysql> SELECT DISTINCT c.ID_candidato
+    -> FROM Candidatos c
+    -> WHERE c.Descripcion IN (SELECT Descripcion FROM Requisitos)
+    -> GROUP BY c.ID_candidato
+    -> HAVING COUNT(DISTINCT c.Descripcion) = (SELECT COUNT(*) FROM Requisitos);
++--------------+
+| ID_candidato |
++--------------+
+|         1001 |
++--------------+
+1 row in set (0.00 sec)
