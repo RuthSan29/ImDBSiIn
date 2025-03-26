@@ -1,0 +1,147 @@
+mysql> CREATE TABLE Flujo (
+    -> flujo varchar (20),
+    -> Caso_1 varchar (20),
+    -> Caso_2 varchar (20),
+    -> Caso_3 varchar (20)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Flujo (flujo,Caso_1,Caso_2,Caso_3) VALUES 
+    -> ('Alta de usuario',0,0,0),
+    -> ('Baja de usuario',0,1,1),
+    -> ('Nueva Orden',1,0,0),
+    -> ('Elimina Orden',0,0,0);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT 
+    ->     Flujo,
+    ->     SUM(`Caso_1` + `Caso_2` + `Caso_3`) AS Aprovado
+    -> FROM Flujo
+    -> GROUP BY Flujo;
++-----------------+----------+
+| Flujo           | Aprovado |
++-----------------+----------+
+| Alta de usuario |        0 |
+| Baja de usuario |        2 |
+| Nueva Orden     |        1 |
+| Elimina Orden   |        0 |
++-----------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Licencias (
+    -> id_empleado INT,
+    -> Licencia varchar (20)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Licencias (id_empleado,Licencia) VALUES
+    -> (1001,'Tipo A'),
+    -> (1001,'Tipo B'),
+    -> (1001,'Tipo C'),
+    -> (2002,'Tipo A'),
+    -> (2002,'Tipo B'),
+    -> (2002,'Tipo C'),
+    -> (3003,'Tipo A'),
+    -> (3003,'Tipo D'),
+    -> (4004,'Tipo A'),
+    -> (4004,'Tipo B'),
+    -> (4004,'Tipo D'),
+    -> (5005,'Tipo A'),
+    -> (5005,'Tipo B'),
+    -> (5005,'Tipo D');
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> SELECT 
+    ->     e1.Id_empleado,
+    ->     e2.Id_empleado,
+    ->     COUNT(e1.Licencia) AS Coincidencias
+    -> FROM Licencias e1
+    -> JOIN Licencias e2 ON e1.Licencia = e2.Licencia AND e1.Id_empleado != e2.Id_empleado
+    -> WHERE (e1.Id_empleado, e2.Id_empleado) IN ((1001, 2002), (2002, 1001), (4004, 5005), (5005, 4004))
+    -> GROUP BY e1.Id_empleado, e2.Id_empleado
+    -> ORDER BY e1.Id_empleado, e2.Id_empleado;
++-------------+-------------+---------------+
+| Id_empleado | Id_empleado | Coincidencias |
++-------------+-------------+---------------+
+|        1001 |        2002 |             3 |
+|        2002 |        1001 |             3 |
+|        4004 |        5005 |             3 |
+|        5005 |        4004 |             3 |
++-------------+-------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Numeros(
+    -> Entero INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Numeros (Entero) VALUES 
+    -> (5),
+    -> (6),
+    -> (10),
+    -> (10),
+    -> (13),
+    -> (14),
+    -> (17),
+    -> (20),
+    -> (81),
+    -> (90),
+    -> (76);
+Query OK, 11 rows affected (0.01 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+mysql> SELECT AVG(Entero) AS Media FROM Numeros;
++---------+
+| Media   |
++---------+
+| 31.0909 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> SELECT
+    ->     AVG(t1.Entero) AS Mediana
+    -> FROM
+    ->     (
+    ->         SELECT
+    ->             Entero,
+    ->             ROW_NUMBER() OVER (ORDER BY Entero) AS RowNum,
+    ->             COUNT(*) OVER () AS TotalCount
+    ->         FROM
+    ->             Numeros
+    ->     ) t1
+    -> WHERE
+    -> );
+    ->     t1.RowNum IN (FLOOR((t1.TotalCount + 1) / 2), FLOOR((t1.TotalCount + 2) / 2));
++---------+
+| Mediana |
++---------+
+| 14.0000 |
++---------+
+1 row in set (0.01 sec)
+mysql> SELECT
+    ->     Entero AS Moda
+    -> FROM
+    ->     Numeros
+    -> GROUP BY
+    ->     Entero
+    -> ORDER BY
+    ->     COUNT(*) DESC
+    -> LIMIT 1;
++------+
+| Moda |
++------+
+|   10 |
++------+
+1 row in set (0.01 sec)
+mysql> SELECT
+    ->     MAX(Entero) - MIN(Entero) AS Rango
+    -> FROM
+    ->     Numeros;
++-------+
+| Rango |
++-------+
+|    85 |
++-------+
+1 row in set (0.00 sec)
